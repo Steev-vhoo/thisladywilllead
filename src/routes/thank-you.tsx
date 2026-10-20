@@ -42,7 +42,7 @@ function ThankYou() {
         <XCircle className="mx-auto h-14 w-14 text-destructive" />
       )}
       <h1 className="mt-6 text-4xl font-bold text-primary">
-        {isLoading ? "Confirming your gift…" : status === "success" ? "Medaase! Thank you." : status === "pending" ? "Payment pending" : "Payment not completed"}
+        {isLoading ? "Confirming your gift…" : status === "success" ? "Thank you!" : status === "pending" ? "Payment pending" : "Payment not completed"}
       </h1>
       <p className="mt-4 text-muted-foreground">
         {status === "success"

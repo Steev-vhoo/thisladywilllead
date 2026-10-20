@@ -277,7 +277,7 @@ function MomoModal({
               <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-success text-primary-foreground">
                 <ShieldCheck className="h-8 w-8" />
               </div>
-              <p className="mt-4 font-display text-2xl font-bold">Medaase! Thank you.</p>
+              <p className="mt-4 font-display text-2xl font-bold">Thank you!</p>
               <p className="mt-2 text-sm text-muted-foreground">
                 Your gift is lifting a young woman into leadership. Ref: <span className="font-mono">{reference}</span>
               </p>
