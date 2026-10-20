@@ -57,7 +57,7 @@ function Apply() {
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
 
   function validate() {
-    const r = steps[step].schema.safeParse(f);
+    const r = steps[step]!.schema.safeParse(f);
     if (r.success) { setErrs({}); return true; }
     const m: Record<string, string> = {};
     r.error.issues.forEach((i) => (m[String(i.path[0])] = i.message));
@@ -74,7 +74,7 @@ function Apply() {
       ...f, program_or_track: PROGRAMS.find((p) => p.slug === f.program_or_track)?.name ?? f.program_or_track,
     });
     setBusy(false);
-    if (error) return toast.error("Could not submit. Please try again.");
+    if (error) { toast.error("Could not submit. Please try again."); return; }
     setDone(true);
   }
 
@@ -113,7 +113,7 @@ function Apply() {
       <h1 className="mt-2 text-4xl font-black text-primary">Program application</h1>
       <div className="mt-6">
         <div className="mb-2 flex justify-between font-label text-xs font-semibold text-muted-foreground">
-          <span>Step {step + 1} of {steps.length}</span><span>{steps[step].title}</span>
+          <span>Step {step + 1} of {steps.length}</span><span>{steps[step]!.title}</span>
         </div>
         <Progress value={((step + 1) / steps.length) * 100} />
       </div>
@@ -136,7 +136,7 @@ function Apply() {
                   <span className="text-sm text-muted-foreground">{p.blurb}</span></span>
               </button>
             ))}
-            {errs.program_or_track && <p className="text-sm text-destructive">{errs.program_or_track}</p>}
+            {errs["program_or_track"] && <p className="text-sm text-destructive">{errs["program_or_track"]}</p>}
           </div>
         )}
         {step === 2 && (<>

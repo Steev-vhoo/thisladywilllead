@@ -116,19 +116,19 @@ export function DonationWidget() {
               className="h-11 bg-card"
             />
           </div>
-          {errors.amount && <p className="text-sm text-destructive">{errors.amount}</p>}
+          {errors["amount"] && <p className="text-sm text-destructive">{errors["amount"]}</p>}
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="dn">Full name</Label>
             <Input id="dn" className="mt-1.5 h-12" value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-            {errors.donor_name && <p className="mt-1 text-sm text-destructive">{errors.donor_name}</p>}
+            {errors["donor_name"] && <p className="mt-1 text-sm text-destructive">{errors["donor_name"]}</p>}
           </div>
           <div>
             <Label htmlFor="de">Email for receipt</Label>
             <Input id="de" type="email" className="mt-1.5 h-12" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="email" />
-            {errors.donor_email && <p className="mt-1 text-sm text-destructive">{errors.donor_email}</p>}
+            {errors["donor_email"] && <p className="mt-1 text-sm text-destructive">{errors["donor_email"]}</p>}
           </div>
         </div>
 

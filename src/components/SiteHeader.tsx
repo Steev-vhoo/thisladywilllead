@@ -28,7 +28,7 @@ export function SiteHeader() {
               {n.label}
             </Link>
           ))}
-          <Link to={session ? "/portal" : "/auth"} className="font-label text-sm font-semibold text-foreground/80 hover:text-primary">
+          <Link to={(session ? "/portal" : "/auth") as "/auth"} className="font-label text-sm font-semibold text-foreground/80 hover:text-primary">
             {session ? "Member Portal" : "Member Login"}
           </Link>
         </nav>

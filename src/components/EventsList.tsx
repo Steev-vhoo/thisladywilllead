@@ -91,14 +91,14 @@ function RsvpDialog({ event, onClose }: { event: EventRow | null; onClose: () =>
     e.preventDefault();
     if (!event) return;
     const p = rsvpSchema.safeParse(form);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) { toast.error(p.error.issues[0]!.message); return; }
     setBusy(true);
     const { data: count } = await supabase.rpc("event_rsvp_count", { _event_id: event.id });
-    if ((count ?? 0) >= event.max_attendees) { setBusy(false); return toast.error("This event is full."); }
+    if ((count ?? 0) >= event.max_attendees) { setBusy(false); { toast.error("This event is full."); return; } }
     const { error } = await supabase.from("event_rsvps").insert({ ...p.data, event_id: event.id });
     setBusy(false);
-    if (error?.code === "23505") return toast.info("You've already RSVP'd for this event.");
-    if (error) return toast.error("Could not RSVP. Try again.");
+    if (error?.code === "23505") { toast.info("You've already RSVP'd for this event."); return; }
+    if (error) { toast.error("Could not RSVP. Try again."); return; }
     toast.success("You're in! See you there.");
     setForm({ full_name: "", email: "" });
     onClose();

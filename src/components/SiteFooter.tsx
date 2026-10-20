@@ -23,9 +23,9 @@ export function SiteFooter() {
   async function subscribe(e: React.FormEvent) {
     e.preventDefault();
     const p = z.string().trim().email().max(255).safeParse(nlEmail);
-    if (!p.success) return toast.error("Enter a valid email");
+    if (!p.success) { toast.error("Enter a valid email"); return; }
     const { error } = await supabase.from("newsletter_subscribers").insert({ email: p.data });
-    if (error && error.code !== "23505") return toast.error("Could not subscribe. Try again.");
+    if (error && error.code !== "23505") { toast.error("Could not subscribe. Try again."); return; }
     toast.success("You're subscribed.");
     setNlEmail("");
   }
@@ -33,11 +33,11 @@ export function SiteFooter() {
   async function contact(e: React.FormEvent) {
     e.preventDefault();
     const p = contactSchema.safeParse(c);
-    if (!p.success) return toast.error(p.error.issues[0].message);
+    if (!p.success) { toast.error(p.error.issues[0]!.message); return; }
     setBusy(true);
     const { error } = await supabase.from("contact_messages").insert(p.data);
     setBusy(false);
-    if (error) return toast.error("Could not send. Please try again.");
+    if (error) { toast.error("Could not send. Please try again."); return; }
     toast.success("Message sent — we'll be in touch soon.");
     setC({ name: "", email: "", message: "" });
   }
