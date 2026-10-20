@@ -26,7 +26,7 @@ export function SiteFooter() {
     if (!p.success) return toast.error("Enter a valid email");
     const { error } = await supabase.from("newsletter_subscribers").insert({ email: p.data });
     if (error && error.code !== "23505") return toast.error("Could not subscribe. Try again.");
-    toast.success("You're on the list, sis! 💜");
+    toast.success("You're subscribed.");
     setNlEmail("");
   }
 
@@ -49,7 +49,7 @@ export function SiteFooter() {
           <p className="font-display text-3xl font-bold">
             This Lady <span className="text-gold">Will.</span>
           </p>
-          <p className="eyebrow mt-2 text-primary-foreground/70">She dreams. She dares. She does.</p>
+          <p className="eyebrow mt-2 text-primary-foreground/70">She Dreams. She Dares. She Does.</p>
           <form onSubmit={subscribe} className="mt-8">
             <label htmlFor="nl" className="font-label text-sm font-semibold">Join our newsletter</label>
             <div className="mt-2 flex gap-2">
