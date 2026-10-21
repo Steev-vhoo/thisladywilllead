@@ -74,14 +74,14 @@ function StoriesAdmin() {
     const { error } = id
       ? await supabase.from("impact_stories").update(payload).eq("id", id)
       : await supabase.from("impact_stories").insert(payload);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(id ? "Story updated" : "Story published");
     setForm(emptyStory); refresh();
   }
   async function remove(id: string) {
     if (!confirm("Delete this story?")) return;
     const { error } = await supabase.from("impact_stories").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Story deleted"); refresh();
   }
   return (
@@ -141,14 +141,14 @@ function EventsAdmin() {
     const { id, ...rest } = form;
     const payload = { ...rest, date: new Date(rest.date).toISOString(), description: rest.description || null, location: rest.location || null, virtual_link: rest.virtual_link || null };
     const { error } = id ? await supabase.from("events").update(payload).eq("id", id) : await supabase.from("events").insert(payload);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success(id ? "Event updated" : "Event posted");
     setForm(emptyEvent); refresh();
   }
   async function remove(id: string) {
     if (!confirm("Delete this event and its sign-ups?")) return;
     const { error } = await supabase.from("events").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Event deleted"); refresh();
   }
   return (
