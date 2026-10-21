@@ -1,0 +1,14 @@
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.impact_stories TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.events TO authenticated;
+GRANT SELECT ON public.event_rsvps TO authenticated;
+GRANT SELECT ON public.volunteers_or_applicants TO authenticated;
+GRANT SELECT ON public.donations TO authenticated;
+CREATE POLICY "Admins insert stories" ON public.impact_stories FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins update stories" ON public.impact_stories FOR UPDATE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins delete stories" ON public.impact_stories FOR DELETE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins insert events" ON public.events FOR INSERT TO authenticated WITH CHECK (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins update events" ON public.events FOR UPDATE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins delete events" ON public.events FOR DELETE TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins view rsvps" ON public.event_rsvps FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+ALTER TABLE public.event_rsvps DROP CONSTRAINT IF EXISTS event_rsvps_event_id_fkey;
+ALTER TABLE public.event_rsvps ADD CONSTRAINT event_rsvps_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE CASCADE;

@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Download, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,7 +33,10 @@ function Portal() {
     <section className="mx-auto max-w-5xl px-4 py-12">
       <div className="flex items-center justify-between gap-4">
         <h1 className="text-4xl font-black text-primary">Member Portal</h1>
-        <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="mr-1 h-4 w-4" />Sign out</Button>
+        <div className="flex gap-2">
+          <Button asChild variant="secondary" className="rounded-full"><Link to="/admin">Admin</Link></Button>
+          <Button variant="outline" onClick={signOut} className="rounded-full"><LogOut className="mr-1 h-4 w-4" />Sign out</Button>
+        </div>
       </div>
       <Tabs defaultValue="guides" className="mt-8">
         <TabsList className="w-full sm:w-auto"><TabsTrigger value="guides">Guides</TabsTrigger><TabsTrigger value="schedule">Schedule</TabsTrigger><TabsTrigger value="directory">Directory</TabsTrigger></TabsList>

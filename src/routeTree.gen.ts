@@ -19,6 +19,7 @@ import { Route as EventsRouteImport } from './routes/events'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
 
@@ -71,6 +72,11 @@ const ThankYouRoute = ThankYouRouteImport.update({
   path: '/thank-you',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPortalRoute = AuthenticatedPortalRouteImport.update({
   id: '/portal',
   path: '/portal',
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/programs': typeof ProgramsRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
 }
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/programs': typeof ProgramsRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
 }
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/programs': typeof ProgramsRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
 }
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/stories'
     | '/thank-you'
+    | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
   fileRoutesByTo: FileRoutesByTo
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/stories'
     | '/thank-you'
+    | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
   id:
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/programs'
     | '/stories'
     | '/thank-you'
+    | '/_authenticated/admin'
     | '/_authenticated/portal'
     | '/api/public/paystack-webhook'
   fileRoutesById: FileRoutesById
@@ -253,6 +265,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ThankYouRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/portal': {
       id: '/_authenticated/portal'
       path: '/portal'
@@ -271,10 +290,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedPortalRoute: typeof AuthenticatedPortalRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedPortalRoute: AuthenticatedPortalRoute,
 }
 
