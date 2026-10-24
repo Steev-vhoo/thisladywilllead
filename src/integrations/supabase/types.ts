@@ -81,6 +81,7 @@ export type Database = {
           event_id: string
           full_name: string
           id: string
+          questions: string | null
         }
         Insert: {
           created_at?: string
@@ -88,6 +89,7 @@ export type Database = {
           event_id: string
           full_name: string
           id?: string
+          questions?: string | null
         }
         Update: {
           created_at?: string
@@ -95,6 +97,7 @@ export type Database = {
           event_id?: string
           full_name?: string
           id?: string
+          questions?: string | null
         }
         Relationships: [
           {
@@ -217,6 +220,54 @@ export type Database = {
         }
         Relationships: []
       }
+      resource_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          resource: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          resource: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          resource?: string
+        }
+        Relationships: []
+      }
+      story_submissions: {
+        Row: {
+          cohort: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          story: string
+        }
+        Insert: {
+          cohort?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          story: string
+        }
+        Update: {
+          cohort?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          story?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -232,6 +283,39 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
+        }
+        Relationships: []
+      }
+      volunteer_applications: {
+        Row: {
+          availability: string | null
+          created_at: string
+          email: string
+          experience: string | null
+          full_name: string
+          id: string
+          phone: string | null
+          track: string
+        }
+        Insert: {
+          availability?: string | null
+          created_at?: string
+          email: string
+          experience?: string | null
+          full_name: string
+          id?: string
+          phone?: string | null
+          track: string
+        }
+        Update: {
+          availability?: string | null
+          created_at?: string
+          email?: string
+          experience?: string | null
+          full_name?: string
+          id?: string
+          phone?: string | null
+          track?: string
         }
         Relationships: []
       }
