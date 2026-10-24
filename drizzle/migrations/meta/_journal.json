@@ -15,6 +15,13 @@
       "when": 1792574953435,
       "tag": "0001_admin_content_management",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792848085374,
+      "tag": "0002_faith_pages_and_seed",
+      "breakpoints": true
     }
   ]
 }

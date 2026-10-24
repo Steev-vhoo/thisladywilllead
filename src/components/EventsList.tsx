@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 
@@ -65,9 +66,9 @@ export function EventsList({ limit }: { limit?: number }) {
                   <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{e.location}</span>
                     <span className="inline-flex items-center gap-1"><Users className="h-3.5 w-3.5" />{e.max_attendees} spots</span>
-                    <span>{d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
+                    <span>{d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} · {d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}</span>
                   </p>
-                  <Button size="sm" className="mt-3 rounded-full" onClick={() => setRsvp(e)}>RSVP</Button>
+                  <Button size="sm" className="mt-3 rounded-full" onClick={() => setRsvp(e)}>RSVP / Register</Button>
                 </div>
               </li>
             );
@@ -82,10 +83,11 @@ export function EventsList({ limit }: { limit?: number }) {
 const rsvpSchema = z.object({
   full_name: z.string().trim().min(2, "Enter your name").max(100),
   email: z.string().trim().email("Enter a valid email").max(255),
+  questions: z.string().trim().max(1000).optional(),
 });
 
 function RsvpDialog({ event, onClose }: { event: EventRow | null; onClose: () => void }) {
-  const [form, setForm] = useState({ full_name: "", email: "" });
+  const [form, setForm] = useState({ full_name: "", email: "", questions: "" });
   const [busy, setBusy] = useState(false);
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -100,17 +102,18 @@ function RsvpDialog({ event, onClose }: { event: EventRow | null; onClose: () =>
     if (error?.code === "23505") { toast.info("You've already RSVP'd for this event."); return; }
     if (error) { toast.error("Could not RSVP. Try again."); return; }
     toast.success("You're in! See you there.");
-    setForm({ full_name: "", email: "" });
+    setForm({ full_name: "", email: "", questions: "" });
     onClose();
   }
   return (
     <Dialog open={!!event} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="w-[calc(100%-1.5rem)] max-w-md rounded-3xl">
-        <DialogTitle className="font-display text-2xl">RSVP</DialogTitle>
+        <DialogTitle className="font-display text-2xl">RSVP / Register</DialogTitle>
         <DialogDescription>{event?.title}</DialogDescription>
         <form onSubmit={submit} className="space-y-4">
           <div><Label htmlFor="rn">Full name</Label><Input id="rn" className="mt-1.5 h-12" value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
           <div><Label htmlFor="re">Email</Label><Input id="re" type="email" className="mt-1.5 h-12" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
+          <div><Label htmlFor="rq">Questions (optional)</Label><Textarea id="rq" rows={3} className="mt-1.5" value={form.questions} onChange={(e) => setForm({ ...form, questions: e.target.value })} /></div>
           <Button type="submit" disabled={busy} className="h-12 w-full rounded-xl bg-gold text-gold-foreground hover:bg-gold/90">
             {busy ? <Loader2 className="animate-spin" /> : "Confirm my seat"}
           </Button>
