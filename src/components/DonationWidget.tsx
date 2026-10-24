@@ -155,7 +155,10 @@ export function DonationWidget() {
           {busy ? <Loader2 className="h-5 w-5 animate-spin" /> : <>Give {amount > 0 ? fmt(amount) : ""} now</>}
         </Button>
         <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-          <Lock className="h-3.5 w-3.5" /> Secured by Paystack · MTN, Telecel, AT & cards
+          <Lock className="h-3.5 w-3.5" /> MTN MoMo · Telecel Cash · AT Money · Credit/Debit Card
+        </p>
+        <p className="mt-2 text-center text-xs italic text-muted-foreground">
+          Official payment processing via Mobile Money &amp; Paystack. Donations directly empower Ghanaian women and girls.
         </p>
       </form>
 
