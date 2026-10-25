@@ -1,19 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StoriesGrid } from "@/components/StoriesGrid";
+import { ShareStoryButton, StoriesGrid } from "@/components/StoriesGrid";
+import { PageIntro } from "@/components/PageIntro";
 
 export const Route = createFileRoute("/stories")({
   head: () => ({
     meta: [
-      { title: "Impact Stories & Blog | This Lady Will" },
-      { name: "description", content: "Testimonials and articles from This Lady Will fellows." },
-      { property: "og:title", content: "Impact Stories | This Lady Will" },
-      { property: "og:description", content: "Stories from our cohort fellows." },
+      { title: "Impact & Stories | This Lady Will" },
+      { name: "description", content: "Testimonials from fellows on spiritual growth, confidence and career milestones." },
+      { property: "og:title", content: "Impact & Stories | This Lady Will" },
+      { property: "og:description", content: "Stories of young women growing into their God-given calling." },
     ],
   }),
   component: () => (
     <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
-      <p className="eyebrow text-gold">Impact</p>
-      <h1 className="mt-2 mb-10 text-5xl font-black text-primary">Stories & blog</h1>
+      <PageIntro eyebrow="Impact" title="Stories of transformation">
+        <p>Fellows from past cohorts share how they grew in faith, confidence and career.</p>
+        <div className="mt-6"><ShareStoryButton /></div>
+      </PageIntro>
       <StoriesGrid />
     </section>
   ),
