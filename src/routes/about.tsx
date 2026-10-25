@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { UserRound } from "lucide-react";
-import founder from "@/assets/founder.jpg";
-import { MOTTO } from "@/lib/site";
+import { MOTTO, VISION, PILLARS } from "@/lib/site";
+import { FounderLetter } from "@/components/FounderLetter";
+import { Reveal, Stagger, StaggerItem } from "@/components/Reveal";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -20,17 +21,23 @@ const SPOTLIGHT = ["Founder", "Mentor", "Mentor", "Mentor", "Mentor", "Mentor"];
 function About() {
   return (
     <>
-      <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-6 lg:grid-cols-2">
-        <div>
+      <section className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
+        <Reveal>
           <p className="eyebrow text-gold">About us</p>
           <h1 className="mt-2 text-5xl font-black text-primary sm:text-6xl">{MOTTO}</h1>
-          <p className="mt-6 text-lg text-muted-foreground">
-            This Lady Will is an NGO dedicated to mentorship and leadership empowerment for young women becoming leaders.
-          </p>
-        </div>
-        <img src={founder} alt="Founder of This Lady Will" width={768} height={960} className="aspect-[4/5] w-full max-w-md justify-self-center rounded-3xl object-cover shadow-royal" />
+          <p className="mt-6 max-w-3xl text-lg text-muted-foreground">{VISION}</p>
+        </Reveal>
+        <Stagger className="mt-10 grid gap-4 md:grid-cols-3">
+          {PILLARS.map((p) => (
+            <StaggerItem key={p.name} className="rounded-3xl border-l-4 border-gold bg-card p-6">
+              <h2 className="text-2xl font-bold text-primary">{p.name}</h2>
+              <p className="mt-2 text-muted-foreground">{p.text}</p>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </section>
-      <section className="bg-card">
+      <FounderLetter />
+      <section>
         <div className="mx-auto max-w-7xl px-5 py-16 sm:px-6">
           <p className="eyebrow text-gold">Leadership</p>
           <h2 className="mt-2 text-4xl font-bold text-primary">Team & mentor spotlight</h2>
