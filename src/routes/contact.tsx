@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageIntro } from "@/components/PageIntro";
 import { Reveal } from "@/components/Reveal";
 import { CONTACT } from "@/lib/site";
+import { AccraMap } from "@/components/AccraMap";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -29,13 +30,6 @@ const schema = z.object({
   email: z.string().trim().email("Valid email required").max(255),
   message: z.string().trim().min(1, "Message is required").max(1000),
 });
-
-export function AccraMap({ className = "" }: { className?: string }) {
-  return (
-    <iframe title="Map of Accra, Ghana" loading="lazy" className={`w-full rounded-2xl border-0 ${className}`}
-      src="https://www.openstreetmap.org/export/embed.html?bbox=-0.30%2C5.52%2C-0.12%2C5.66&layer=mapnik&marker=5.6037%2C-0.1870" />
-  );
-}
 
 function Contact() {
   const [c, setC] = useState({ name: "", email: "", message: "" });

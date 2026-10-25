@@ -15,11 +15,14 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as VolunteerRouteImport } from './routes/volunteer'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
@@ -53,6 +56,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DonateRoute = DonateRouteImport.update({
   id: '/donate',
   path: '/donate',
@@ -68,6 +76,11 @@ const ProgramsRoute = ProgramsRouteImport.update({
   path: '/programs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StoriesRoute = StoriesRouteImport.update({
   id: '/stories',
   path: '/stories',
@@ -76,6 +89,11 @@ const StoriesRoute = StoriesRouteImport.update({
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
   path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VolunteerRoute = VolunteerRouteImport.update({
+  id: '/volunteer',
+  path: '/volunteer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -101,11 +119,14 @@ export interface FileRoutesByFullPath {
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -116,11 +137,14 @@ export interface FileRoutesByTo {
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -133,11 +157,14 @@ export interface FileRoutesById {
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -150,11 +177,14 @@ export interface FileRouteTypes {
     | '/apply'
     | '/auth'
     | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
@@ -165,11 +195,14 @@ export interface FileRouteTypes {
     | '/apply'
     | '/auth'
     | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
@@ -181,11 +214,14 @@ export interface FileRouteTypes {
     | '/apply'
     | '/auth'
     | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/_authenticated/admin'
     | '/_authenticated/portal'
     | '/api/public/paystack-webhook'
@@ -198,11 +234,14 @@ export interface RootRouteChildren {
   ApplyRoute: typeof ApplyRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
   DonateRoute: typeof DonateRoute
   EventsRoute: typeof EventsRoute
   ProgramsRoute: typeof ProgramsRoute
+  ResourcesRoute: typeof ResourcesRoute
   StoriesRoute: typeof StoriesRoute
   ThankYouRoute: typeof ThankYouRoute
+  VolunteerRoute: typeof VolunteerRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
 }
 
@@ -250,6 +289,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/donate': {
       id: '/donate'
       path: '/donate'
@@ -271,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stories': {
       id: '/stories'
       path: '/stories'
@@ -283,6 +336,13 @@ declare module '@tanstack/react-router' {
       path: '/thank-you'
       fullPath: '/thank-you'
       preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/volunteer': {
+      id: '/volunteer'
+      path: '/volunteer'
+      fullPath: '/volunteer'
+      preLoaderRoute: typeof VolunteerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -329,11 +389,14 @@ const rootRouteChildren: RootRouteChildren = {
   ApplyRoute: ApplyRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
   DonateRoute: DonateRoute,
   EventsRoute: EventsRoute,
   ProgramsRoute: ProgramsRoute,
+  ResourcesRoute: ResourcesRoute,
   StoriesRoute: StoriesRoute,
   ThankYouRoute: ThankYouRoute,
+  VolunteerRoute: VolunteerRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
 }
 export const routeTree = rootRouteImport
