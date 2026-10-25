@@ -14,11 +14,16 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProgramsRouteImport } from './routes/programs'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as ThankYouRouteImport } from './routes/thank-you'
+import { Route as VolunteerRouteImport } from './routes/volunteer'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedPortalRouteImport } from './routes/_authenticated/portal'
 import { Route as ApiPublicPaystackWebhookRouteImport } from './routes/api/public/paystack-webhook'
@@ -47,6 +52,16 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DonateRoute = DonateRouteImport.update({
   id: '/donate',
   path: '/donate',
@@ -57,9 +72,19 @@ const EventsRoute = EventsRouteImport.update({
   path: '/events',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgramsRoute = ProgramsRouteImport.update({
   id: '/programs',
   path: '/programs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StoriesRoute = StoriesRouteImport.update({
@@ -70,6 +95,11 @@ const StoriesRoute = StoriesRouteImport.update({
 const ThankYouRoute = ThankYouRouteImport.update({
   id: '/thank-you',
   path: '/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VolunteerRoute = VolunteerRouteImport.update({
+  id: '/volunteer',
+  path: '/volunteer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
@@ -94,11 +124,16 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -108,11 +143,16 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -124,11 +164,16 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
+  '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
+  '/resources': typeof ResourcesRoute
   '/stories': typeof StoriesRoute
   '/thank-you': typeof ThankYouRoute
+  '/volunteer': typeof VolunteerRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/portal': typeof AuthenticatedPortalRoute
   '/api/public/paystack-webhook': typeof ApiPublicPaystackWebhookRoute
@@ -140,11 +185,16 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
+    | '/login'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
@@ -154,11 +204,16 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
+    | '/login'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/admin'
     | '/portal'
     | '/api/public/paystack-webhook'
@@ -169,11 +224,16 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
+    | '/contact'
     | '/donate'
     | '/events'
+    | '/login'
     | '/programs'
+    | '/resources'
     | '/stories'
     | '/thank-you'
+    | '/volunteer'
     | '/_authenticated/admin'
     | '/_authenticated/portal'
     | '/api/public/paystack-webhook'
@@ -185,11 +245,16 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ApplyRoute: typeof ApplyRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
+  ContactRoute: typeof ContactRoute
   DonateRoute: typeof DonateRoute
   EventsRoute: typeof EventsRoute
+  LoginRoute: typeof LoginRoute
   ProgramsRoute: typeof ProgramsRoute
+  ResourcesRoute: typeof ResourcesRoute
   StoriesRoute: typeof StoriesRoute
   ThankYouRoute: typeof ThankYouRoute
+  VolunteerRoute: typeof VolunteerRoute
   ApiPublicPaystackWebhookRoute: typeof ApiPublicPaystackWebhookRoute
 }
 
@@ -230,6 +295,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/donate': {
       id: '/donate'
       path: '/donate'
@@ -244,11 +323,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EventsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programs': {
       id: '/programs'
       path: '/programs'
       fullPath: '/programs'
       preLoaderRoute: typeof ProgramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/stories': {
@@ -263,6 +356,13 @@ declare module '@tanstack/react-router' {
       path: '/thank-you'
       fullPath: '/thank-you'
       preLoaderRoute: typeof ThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/volunteer': {
+      id: '/volunteer'
+      path: '/volunteer'
+      fullPath: '/volunteer'
+      preLoaderRoute: typeof VolunteerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin': {
@@ -308,11 +408,16 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ApplyRoute: ApplyRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
+  ContactRoute: ContactRoute,
   DonateRoute: DonateRoute,
   EventsRoute: EventsRoute,
+  LoginRoute: LoginRoute,
   ProgramsRoute: ProgramsRoute,
+  ResourcesRoute: ResourcesRoute,
   StoriesRoute: StoriesRoute,
   ThankYouRoute: ThankYouRoute,
+  VolunteerRoute: VolunteerRoute,
   ApiPublicPaystackWebhookRoute: ApiPublicPaystackWebhookRoute,
 }
 export const routeTree = rootRouteImport

@@ -32,16 +32,15 @@ const steps = [
     full_name: z.string().trim().min(2, "Enter your full name").max(100),
     email: z.string().trim().email("Enter a valid email").max(255),
     phone: z.string().trim().regex(/^\+?\d{9,15}$/, "Enter a valid phone number"),
-    location: z.string().trim().min(2, "Enter your city/region").max(100),
+    location: z.enum(["Accra", "Kumasi", "Diaspora"], { message: "Choose your location" }),
+    education: z.string().trim().min(2, "Tell us your education").max(500),
   }) },
   { title: "Track", schema: z.object({ program_or_track: z.string().min(1, "Choose a track") }) },
-  { title: "Education & goals", schema: z.object({
-    education: z.string().trim().min(2, "Tell us your education").max(500),
+  { title: "Faith & purpose", schema: z.object({
     career_aspirations: z.string().trim().min(10, "Share a little more (10+ characters)").max(1000),
-  }) },
-  { title: "Statement", schema: z.object({
     statement: z.string().trim().min(50, "Please write at least 50 characters").max(3000),
   }) },
+  { title: "Review & submit", schema: z.object({}) },
 ];
 
 function Apply() {
@@ -122,7 +121,17 @@ function Apply() {
           {field("full_name", "Full name", { autoComplete: "name" })}
           {field("email", "Email", { type: "email", autoComplete: "email" })}
           {field("phone", "Phone", { type: "tel", inputMode: "tel", autoComplete: "tel", placeholder: "024 123 4567" })}
-          {field("location", "City / Region")}
+          <div>
+            <Label>Location</Label>
+            <div role="radiogroup" aria-label="Location" className="mt-1.5 grid grid-cols-3 gap-2">
+              {["Accra", "Kumasi", "Diaspora"].map((l) => (
+                <button type="button" role="radio" aria-checked={f.location === l} key={l} onClick={() => setF({ ...f, location: l })}
+                  className={cn("h-12 rounded-xl border-2 font-label text-sm font-bold", f.location === l ? "border-gold bg-gold-soft" : "border-border")}>{l}</button>
+              ))}
+            </div>
+            {errs["location"] && <p className="mt-1 text-sm text-destructive">{errs["location"]}</p>}
+          </div>
+          {area("education", "Education (school, programme, level)", 2)}
         </>)}
         {step === 1 && (
           <div role="radiogroup" aria-label="Track preference" className="grid gap-3">
@@ -140,10 +149,17 @@ function Apply() {
           </div>
         )}
         {step === 2 && (<>
-          {area("education", "Education (school, programme, level)", 3)}
-          {area("career_aspirations", "Career aspirations")}
+          {area("statement", "Tell us how you hope to grow in your calling and what truth and boldness mean to you", 8)}
+          {area("career_aspirations", "Your dreams and career aspirations", 3)}
         </>)}
-        {step === 3 && area("statement", "Personal statement — why do you want to lead?", 8)}
+        {step === 3 && (
+          <dl className="space-y-3 text-sm">
+            {([["Name", f.full_name], ["Email", f.email], ["Phone", f.phone], ["Location", f.location],
+              ["Track", PROGRAMS.find((p) => p.slug === f.program_or_track)?.name ?? ""], ["Faith & purpose", f.statement]] as const).map(([k, v]) => (
+              <div key={k}><dt className="font-label font-bold text-primary">{k}</dt><dd className="whitespace-pre-wrap text-muted-foreground">{v}</dd></div>
+            ))}
+          </dl>
+        )}
         <div className="flex gap-3 pt-2">
           {step > 0 && <Button type="button" variant="outline" className="h-12 flex-1 rounded-xl" onClick={() => setStep(step - 1)}>Back</Button>}
           <Button type="submit" disabled={busy} className="h-12 flex-[2] rounded-xl bg-gold text-gold-foreground hover:bg-gold/90">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Linkedin, Loader2, MapPin, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Loader2, MapPin, MessageCircle, Twitter } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SOCIALS } from "@/lib/site";
+import { AccraMap } from "@/components/AccraMap";
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Name is required").max(100),
@@ -63,6 +64,7 @@ export function SiteFooter() {
               { href: SOCIALS.x, Icon: Twitter, label: "X" },
               { href: SOCIALS.linkedin, Icon: Linkedin, label: "LinkedIn" },
               { href: SOCIALS.facebook, Icon: Facebook, label: "Facebook" },
+              { href: SOCIALS.whatsapp, Icon: MessageCircle, label: "WhatsApp community" },
             ].map(({ href, Icon, label }) => (
               <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="grid h-11 w-11 place-items-center rounded-full border border-primary-foreground/20 hover:border-gold hover:text-gold">
                 <Icon className="h-5 w-5" />
@@ -83,17 +85,16 @@ export function SiteFooter() {
 
         <div>
           <p className="font-display text-2xl font-bold">Visit us</p>
-          <div className="mt-3 grid aspect-[4/3] place-items-center rounded-2xl border border-dashed border-primary-foreground/30 bg-primary-foreground/5">
-            <div className="text-center">
-              <MapPin className="mx-auto h-8 w-8 text-gold" />
-              <p className="mt-2 text-sm text-primary-foreground/80">Accra, Ghana</p>
-              <p className="text-xs text-primary-foreground/50">Map coming soon</p>
-            </div>
-          </div>
+          <AccraMap className="mt-3 aspect-[4/3]" />
+          <p className="mt-2 inline-flex items-center gap-1 text-sm text-primary-foreground/80"><MapPin className="h-4 w-4 text-gold" />Accra, Ghana · <a href="mailto:thisladywill@gmail.com" className="hover:text-gold">thisladywill@gmail.com</a></p>
           <nav className="mt-6 grid grid-cols-2 gap-2 text-sm text-primary-foreground/80" aria-label="Footer">
             <Link to="/programs" className="hover:text-gold">Programs</Link>
             <Link to="/events" className="hover:text-gold">Events</Link>
             <Link to="/stories" className="hover:text-gold">Stories</Link>
+            <Link to="/blog" className="hover:text-gold">Blog</Link>
+            <Link to="/resources" className="hover:text-gold">Resources</Link>
+            <Link to="/volunteer" className="hover:text-gold">Volunteer</Link>
+            <Link to="/contact" className="hover:text-gold">Contact</Link>
             <Link to="/donate" className="hover:text-gold">Donate</Link>
           </nav>
         </div>
