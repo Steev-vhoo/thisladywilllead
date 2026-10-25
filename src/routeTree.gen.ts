@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as EventsRouteImport } from './routes/events'
 import { Route as ProgramsRouteImport } from './routes/programs'
@@ -45,6 +46,11 @@ const ApplyRoute = ApplyRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DonateRoute = DonateRouteImport.update({
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/apply': typeof ApplyRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
   '/programs': typeof ProgramsRoute
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
     | '/donate'
     | '/events'
     | '/programs'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
     | '/donate'
     | '/events'
     | '/programs'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/apply'
     | '/auth'
+    | '/blog'
     | '/donate'
     | '/events'
     | '/programs'
@@ -185,6 +197,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ApplyRoute: typeof ApplyRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
   DonateRoute: typeof DonateRoute
   EventsRoute: typeof EventsRoute
   ProgramsRoute: typeof ProgramsRoute
@@ -228,6 +241,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/donate': {
@@ -308,6 +328,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ApplyRoute: ApplyRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
   DonateRoute: DonateRoute,
   EventsRoute: EventsRoute,
   ProgramsRoute: ProgramsRoute,
