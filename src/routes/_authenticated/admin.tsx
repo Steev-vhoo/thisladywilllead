@@ -2,13 +2,14 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, UserRound } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { mediaUrl, removeMedia, uploadMedia, useGallery, useTeam } from "@/lib/media";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Admin Dashboard | This Lady Will" }, { name: "robots", content: "noindex" }] }),
@@ -45,11 +46,15 @@ function Admin() {
         <TabsList className="flex w-full flex-wrap h-auto sm:w-auto">
           <TabsTrigger value="stories">Stories</TabsTrigger>
           <TabsTrigger value="events">Events</TabsTrigger>
+          <TabsTrigger value="gallery">Gallery</TabsTrigger>
+          <TabsTrigger value="team">Team</TabsTrigger>
           <TabsTrigger value="applications">Applications</TabsTrigger>
           <TabsTrigger value="donations">Donations</TabsTrigger>
         </TabsList>
         <TabsContent value="stories" className="mt-6"><StoriesAdmin /></TabsContent>
         <TabsContent value="events" className="mt-6"><EventsAdmin /></TabsContent>
+        <TabsContent value="gallery" className="mt-6"><GalleryAdmin /></TabsContent>
+        <TabsContent value="team" className="mt-6"><TeamAdmin /></TabsContent>
         <TabsContent value="applications" className="mt-6"><ApplicationsAdmin /></TabsContent>
         <TabsContent value="donations" className="mt-6"><DonationsAdmin /></TabsContent>
       </Tabs>
@@ -238,6 +243,152 @@ function DonationsAdmin() {
         </li>
       ))}
     </ul>
+  );
+}
+
+function GalleryAdmin() {
+  const qc = useQueryClient();
+  const { data: photos = [] } = useGallery();
+  const [files, setFiles] = useState<File[]>([]);
+  const [album, setAlbum] = useState("General");
+  const [caption, setCaption] = useState("");
+  const [busy, setBusy] = useState(false);
+  async function upload(e: React.FormEvent) {
+    e.preventDefault();
+    if (files.length === 0) return;
+    setBusy(true);
+    try {
+      for (const file of files) {
+        const image_path = await uploadMedia("gallery", file);
+        const { error } = await supabase.from("gallery_items").insert({ image_path, album, caption: caption || null });
+        if (error) { await removeMedia(image_path); throw error; }
+      }
+      toast.success(files.length === 1 ? "Photo added" : `${files.length} photos added`);
+      setFiles([]); setCaption(""); (e.target as HTMLFormElement).reset();
+      qc.invalidateQueries({ queryKey: ["gallery"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Upload failed");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function remove(id: string, path: string) {
+    if (!confirm("Delete this photo?")) return;
+    const { error } = await supabase.from("gallery_items").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    await removeMedia(path);
+    toast.success("Photo deleted"); qc.invalidateQueries({ queryKey: ["gallery"] });
+  }
+  return (
+    <div className="grid gap-8 lg:grid-cols-2">
+      <form onSubmit={upload} className="space-y-4 rounded-2xl border bg-card p-6">
+        <h2 className="font-display text-2xl font-bold">Add photos</h2>
+        <Field label="Photos (JPG, PNG or WebP, up to 5 MB each)">
+          <Input type="file" accept="image/jpeg,image/png,image/webp" multiple required onChange={(e) => setFiles([...(e.target.files ?? [])])} />
+        </Field>
+        <Field label="Album"><Input required value={album} onChange={(e) => setAlbum(e.target.value)} placeholder="e.g. Mentorship Conference 2026" /></Field>
+        <Field label="Caption (optional, applies to all selected photos)"><Input value={caption} onChange={(e) => setCaption(e.target.value)} /></Field>
+        <p className="text-sm text-muted-foreground">Only publish photos of people who have agreed to appear on the website.</p>
+        <Button type="submit" disabled={busy} className="rounded-full">{busy ? "Uploading…" : "Upload"}</Button>
+      </form>
+      <ul className="grid grid-cols-3 gap-3 self-start">
+        {photos.map((p) => (
+          <li key={p.id} className="relative overflow-hidden rounded-xl border">
+            <img src={mediaUrl(p.image_path)} alt={p.caption ?? p.album} className="aspect-square w-full object-cover" />
+            <p className="truncate px-2 py-1 text-xs text-muted-foreground">{p.album}</p>
+            <Button size="icon" variant="secondary" aria-label="Delete photo" className="absolute right-1 top-1 h-8 w-8" onClick={() => remove(p.id, p.image_path)}>
+              <Trash2 className="h-4 w-4 text-destructive" />
+            </Button>
+          </li>
+        ))}
+        {photos.length === 0 && <p className="col-span-3 text-muted-foreground">No photos yet.</p>}
+      </ul>
+    </div>
+  );
+}
+
+const emptyMember = { id: "", full_name: "", role: "", group_name: "Mentor", bio: "", sort_order: 10, photo_path: null as string | null };
+
+function TeamAdmin() {
+  const qc = useQueryClient();
+  const { data: team = [] } = useTeam();
+  const [form, setForm] = useState(emptyMember);
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [busy, setBusy] = useState(false);
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      const { id, ...rest } = form;
+      let photo_path = rest.photo_path;
+      if (photo) {
+        photo_path = await uploadMedia("team", photo);
+        await removeMedia(rest.photo_path);
+      }
+      const payload = { ...rest, photo_path, bio: rest.bio || null };
+      const { error } = id
+        ? await supabase.from("team_members").update(payload).eq("id", id)
+        : await supabase.from("team_members").insert(payload);
+      if (error) throw error;
+      toast.success(id ? "Profile updated" : "Profile added");
+      setForm(emptyMember); setPhoto(null); (e.target as HTMLFormElement).reset();
+      qc.invalidateQueries({ queryKey: ["team"] });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not save profile");
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function remove(id: string, path: string | null) {
+    if (!confirm("Delete this profile?")) return;
+    const { error } = await supabase.from("team_members").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    await removeMedia(path);
+    toast.success("Profile deleted"); qc.invalidateQueries({ queryKey: ["team"] });
+  }
+  return (
+    <div className="grid gap-8 lg:grid-cols-2">
+      <form onSubmit={save} className="space-y-4 rounded-2xl border bg-card p-6">
+        <h2 className="font-display text-2xl font-bold">{form.id ? "Edit profile" : "New profile"}</h2>
+        <Field label="Full name"><Input required value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Role / title"><Input required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} placeholder="e.g. Mentor, Leadership Academy" /></Field>
+          <Field label="Group">
+            <select value={form.group_name} onChange={(e) => setForm({ ...form, group_name: e.target.value })} className="h-10 w-full rounded-md border bg-background px-3 text-sm">
+              <option>Founder</option><option>Team</option><option>Mentor</option>
+            </select>
+          </Field>
+        </div>
+        <Field label="Short bio (optional)"><Textarea rows={3} value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} /></Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label={form.photo_path ? "Replace photo" : "Photo"}><Input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => setPhoto(e.target.files?.[0] ?? null)} /></Field>
+          <Field label="Order (lower shows first)"><Input type="number" value={form.sort_order} onChange={(e) => setForm({ ...form, sort_order: Number(e.target.value) })} /></Field>
+        </div>
+        <div className="flex gap-2">
+          <Button type="submit" disabled={busy} className="rounded-full">{busy ? "Saving…" : form.id ? "Save changes" : "Add profile"}</Button>
+          {form.id && <Button type="button" variant="outline" className="rounded-full" onClick={() => setForm(emptyMember)}>Cancel</Button>}
+        </div>
+      </form>
+      <ul className="space-y-3">
+        {team.map((m) => (
+          <li key={m.id} className="flex items-center justify-between gap-3 rounded-xl border bg-card p-4">
+            <div className="flex items-center gap-3">
+              {m.photo_path ? (
+                <img src={mediaUrl(m.photo_path)} alt="" className="h-10 w-10 rounded-full object-cover" />
+              ) : (
+                <div className="grid h-10 w-10 place-items-center rounded-full bg-secondary"><UserRound className="h-5 w-5" /></div>
+              )}
+              <div><p className="font-semibold">{m.full_name}</p><p className="text-sm text-muted-foreground">{m.group_name} · {m.role}</p></div>
+            </div>
+            <div className="flex shrink-0 gap-1">
+              <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => setForm({ id: m.id, full_name: m.full_name, role: m.role, group_name: m.group_name, bio: m.bio ?? "", sort_order: m.sort_order, photo_path: m.photo_path })}><Pencil className="h-4 w-4" /></Button>
+              <Button size="icon" variant="ghost" aria-label="Delete" onClick={() => remove(m.id, m.photo_path)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+            </div>
+          </li>
+        ))}
+        {team.length === 0 && <p className="text-muted-foreground">No profiles yet.</p>}
+      </ul>
+    </div>
   );
 }
 

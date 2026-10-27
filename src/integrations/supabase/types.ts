@@ -145,6 +145,33 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_items: {
+        Row: {
+          album: string
+          caption: string | null
+          created_at: string
+          id: string
+          image_path: string
+          sort_order: number
+        }
+        Insert: {
+          album?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_path: string
+          sort_order?: number
+        }
+        Update: {
+          album?: string
+          caption?: string | null
+          created_at?: string
+          id?: string
+          image_path?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
       impact_stories: {
         Row: {
           author: string | null
@@ -265,6 +292,39 @@ export type Database = {
           full_name?: string
           id?: string
           story?: string
+        }
+        Relationships: []
+      }
+      team_members: {
+        Row: {
+          bio: string | null
+          created_at: string
+          full_name: string
+          group_name: string
+          id: string
+          photo_path: string | null
+          role: string
+          sort_order: number
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          full_name: string
+          group_name?: string
+          id?: string
+          photo_path?: string | null
+          role: string
+          sort_order?: number
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          full_name?: string
+          group_name?: string
+          id?: string
+          photo_path?: string | null
+          role?: string
+          sort_order?: number
         }
         Relationships: []
       }

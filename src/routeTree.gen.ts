@@ -18,6 +18,7 @@ import { Route as BlogRouteImport } from './routes/blog'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as DonateRouteImport } from './routes/donate'
 import { Route as EventsRouteImport } from './routes/events'
+import { Route as GalleryRouteImport } from './routes/gallery'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ProgramsRouteImport } from './routes/programs'
 import { Route as ResourcesRouteImport } from './routes/resources'
@@ -70,6 +71,11 @@ const DonateRoute = DonateRouteImport.update({
 const EventsRoute = EventsRouteImport.update({
   id: '/events',
   path: '/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/donate': typeof DonateRoute
   '/events': typeof EventsRoute
+  '/gallery': typeof GalleryRoute
   '/login': typeof LoginRoute
   '/programs': typeof ProgramsRoute
   '/resources': typeof ResourcesRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/donate'
     | '/events'
+    | '/gallery'
     | '/login'
     | '/programs'
     | '/resources'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/donate'
     | '/events'
+    | '/gallery'
     | '/login'
     | '/programs'
     | '/resources'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/donate'
     | '/events'
+    | '/gallery'
     | '/login'
     | '/programs'
     | '/resources'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DonateRoute: typeof DonateRoute
   EventsRoute: typeof EventsRoute
+  GalleryRoute: typeof GalleryRoute
   LoginRoute: typeof LoginRoute
   ProgramsRoute: typeof ProgramsRoute
   ResourcesRoute: typeof ResourcesRoute
@@ -321,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/events'
       fullPath: '/events'
       preLoaderRoute: typeof EventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -412,6 +432,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DonateRoute: DonateRoute,
   EventsRoute: EventsRoute,
+  GalleryRoute: GalleryRoute,
   LoginRoute: LoginRoute,
   ProgramsRoute: ProgramsRoute,
   ResourcesRoute: ResourcesRoute,

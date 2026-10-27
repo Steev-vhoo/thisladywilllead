@@ -11,6 +11,7 @@ import { PROGRAMS } from "@/lib/site";
 const NAV = [
   { to: "/about", label: "About" },
   { to: "/stories", label: "Impact & Stories" },
+  { to: "/gallery", label: "Gallery" },
   { to: "/events", label: "Events" },
   { to: "/blog", label: "Blog & Insights" },
   { to: "/resources", label: "Resources" },

@@ -13,6 +13,7 @@ to its own database.
 | `01_schema.sql` | All tables, roles, row-level security and functions from `drizzle/migrations`, without the sample events and testimonials, plus hardening (members can't read each other's emails, RSVP capacity enforced in the database, admins can read contact messages and subscribers) |
 | `02_seed.sql` | Real content only: the Women's Mentorship Conference, 14 Nov 2026 |
 | `03_make_admin.sql` | Makes a signed-up account an admin |
+| `04_gallery_team.sql` | Gallery photos, team/mentor profiles (with the founder) and the public `media` storage bucket. Admins manage both from `/admin` |
 
 ## 1. Create the project
 
@@ -26,7 +27,7 @@ to its own database.
 ## 2. Create the database
 
 In the project: **SQL Editor -> New query**. Paste `01_schema.sql`, click
-**Run**. Then do the same with `02_seed.sql`.
+**Run**. Then do the same with `02_seed.sql`, then `04_gallery_team.sql`.
 
 Before running the seed, confirm the conference seat capacity with the client
 and change `100` if needed.

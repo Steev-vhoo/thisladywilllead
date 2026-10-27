@@ -91,6 +91,7 @@ export function SiteFooter() {
             <Link to="/programs" className="hover:text-gold">Programs</Link>
             <Link to="/events" className="hover:text-gold">Events</Link>
             <Link to="/stories" className="hover:text-gold">Stories</Link>
+            <Link to="/gallery" className="hover:text-gold">Gallery</Link>
             <Link to="/blog" className="hover:text-gold">Blog</Link>
             <Link to="/resources" className="hover:text-gold">Resources</Link>
             <Link to="/volunteer" className="hover:text-gold">Volunteer</Link>
