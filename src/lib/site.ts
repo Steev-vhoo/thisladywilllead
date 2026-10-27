@@ -50,9 +50,9 @@ export const DONATION_TIERS = [
 
 const SHARE = encodeURIComponent("This Lady Will — She Dreams. She Dares. She Does. https://thisladywilllead.lovable.app");
 export const SOCIALS = {
-  instagram: "https://www.instagram.com/thisladywill",
+  instagram: "https://www.instagram.com/this.ladywill",
   x: `https://twitter.com/intent/tweet?text=${SHARE}`,
   linkedin: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fthisladywilllead.lovable.app",
-  facebook: "https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fthisladywilllead.lovable.app",
+  facebook: "https://web.facebook.com/profile.php?id=61577803606460",
   whatsapp: CONTACT.whatsapp,
 };
