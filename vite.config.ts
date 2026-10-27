@@ -12,4 +12,6 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Vercel sets VERCEL=1 during builds; Lovable builds keep the cloudflare default.
+  nitro: process.env.VERCEL ? { preset: "vercel" } : undefined,
 });
