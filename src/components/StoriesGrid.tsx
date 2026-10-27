@@ -38,12 +38,19 @@ function StoryDialog({ story, onClose }: { story: Story | null; onClose: () => v
   );
 }
 
+export function useHasTestimonials() {
+  const { data = [] } = useStories();
+  return data.some((s) => s.category === "Testimonial");
+}
+
 /** Testimonials from fellows. */
 export function StoriesGrid({ limit }: { limit?: number }) {
   const [open, setOpen] = useState<Story | null>(null);
   const { data = [], isLoading } = useStories();
   if (isLoading) return <Loader2 className="mx-auto h-8 w-8 animate-spin text-primary" />;
   const items = data.filter((s) => s.category === "Testimonial").slice(0, limit);
+  if (items.length === 0)
+    return <p className="rounded-3xl border border-dashed p-10 text-center text-muted-foreground">Stories from our fellows are coming soon.</p>;
   return (
     <>
       <Stagger className="grid gap-5 md:grid-cols-3">

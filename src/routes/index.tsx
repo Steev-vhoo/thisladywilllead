@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProgramCards } from "@/components/ProgramCards";
 import { EventsList } from "@/components/EventsList";
-import { StoriesGrid } from "@/components/StoriesGrid";
+import { StoriesGrid, useHasTestimonials } from "@/components/StoriesGrid";
 import { DonationWidget } from "@/components/DonationWidget";
 import { HeroCarousel, HeroTagline } from "@/components/Hero";
 import { FounderLetter } from "@/components/FounderLetter";
@@ -38,6 +38,7 @@ function Section({ eyebrow, title, children, action }: { eyebrow: string; title:
 }
 
 function Index() {
+  const hasStories = useHasTestimonials();
   return (
     <>
       <section className="relative overflow-hidden bg-royal text-primary-foreground">
@@ -85,9 +86,11 @@ function Index() {
         </Section>
       </div>
 
-      <Section eyebrow="Impact" title="Stories of fellows" action={<Button asChild variant="outline" className="rounded-full"><Link to="/stories">All stories</Link></Button>}>
-        <StoriesGrid limit={3} />
-      </Section>
+      {hasStories && (
+        <Section eyebrow="Impact" title="Stories of fellows" action={<Button asChild variant="outline" className="rounded-full"><Link to="/stories">All stories</Link></Button>}>
+          <StoriesGrid limit={3} />
+        </Section>
+      )}
 
       <section className="bg-royal">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-16 sm:px-6 sm:py-24 lg:grid-cols-2">
