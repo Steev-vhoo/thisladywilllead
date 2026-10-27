@@ -67,7 +67,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "description", content: "Mentorship and leadership empowerment for young women in Ghana." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#4C1D95" },
+      { name: "theme-color", content: "#622C80" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

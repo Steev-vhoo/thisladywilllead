@@ -9,6 +9,7 @@ import { useSession } from "@/hooks/use-session";
 import { PROGRAMS } from "@/lib/site";
 
 const NAV = [
+  { to: "/about", label: "About" },
   { to: "/stories", label: "Impact & Stories" },
   { to: "/events", label: "Events" },
   { to: "/blog", label: "Blog & Insights" },

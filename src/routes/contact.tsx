@@ -52,8 +52,8 @@ function Contact() {
         <Reveal className="space-y-6">
           <ul className="space-y-3 text-lg">
             <li><a href={`mailto:${CONTACT.email}`} className="inline-flex items-center gap-3 hover:text-primary"><Mail className="text-gold" />{CONTACT.email}</a></li>
-            <li className="inline-flex items-center gap-3"><Phone className="text-gold" />{CONTACT.phone}</li>
-            <li><a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 hover:text-primary"><MessageCircle className="text-gold" />Chat on WhatsApp</a></li>
+            {CONTACT.phone && <li className="inline-flex items-center gap-3"><Phone className="text-gold" />{CONTACT.phone}</li>}
+            {CONTACT.whatsapp && <li><a href={CONTACT.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 hover:text-primary"><MessageCircle className="text-gold" />Chat on WhatsApp</a></li>}
             <li className="inline-flex items-center gap-3"><MapPin className="text-gold" />{CONTACT.location}</li>
           </ul>
           <AccraMap className="h-80 shadow-royal" />

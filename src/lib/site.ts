@@ -9,10 +9,13 @@ export const PILLARS = [
   { name: "Boldness", text: "Courage to dream, dare and do what God has placed in our hearts." },
 ] as const;
 
-export const CONTACT = {
+export const SITE_URL = "https://thisladywilllead.lovable.app";
+
+// phone and whatsapp stay null until the client confirms a number; the UI hides them while null.
+export const CONTACT: { email: string; phone: string | null; whatsapp: string | null; location: string } = {
   email: "thisladywill@gmail.com",
-  phone: "+233 00 000 0000",
-  whatsapp: "https://wa.me/233000000000",
+  phone: null,
+  whatsapp: null,
   location: "Accra, Ghana",
 };
 
@@ -48,11 +51,11 @@ export const DONATION_TIERS = [
   { id: "cohort", label: "Cohort Champion & Resource Sponsor", amount: 1000, cadence: "", impact: "Champion a cohort and fund its resources." },
 ] as const;
 
-const SHARE = encodeURIComponent("This Lady Will — She Dreams. She Dares. She Does. https://thisladywilllead.lovable.app");
+const SHARE = encodeURIComponent(`This Lady Will — She Dreams. She Dares. She Does. ${SITE_URL}`);
 export const SOCIALS = {
   instagram: "https://www.instagram.com/this.ladywill",
   x: `https://twitter.com/intent/tweet?text=${SHARE}`,
-  linkedin: "https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fthisladywilllead.lovable.app",
+  linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(SITE_URL)}`,
   facebook: "https://web.facebook.com/profile.php?id=61577803606460",
   whatsapp: CONTACT.whatsapp,
 };

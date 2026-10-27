@@ -61,11 +61,11 @@ export function SiteFooter() {
           <div className="mt-8 flex gap-3">
             {[
               { href: SOCIALS.instagram, Icon: Instagram, label: "Instagram" },
-              { href: SOCIALS.x, Icon: Twitter, label: "X" },
-              { href: SOCIALS.linkedin, Icon: Linkedin, label: "LinkedIn" },
+              { href: SOCIALS.x, Icon: Twitter, label: "Share on X" },
+              { href: SOCIALS.linkedin, Icon: Linkedin, label: "Share on LinkedIn" },
               { href: SOCIALS.facebook, Icon: Facebook, label: "Facebook" },
               { href: SOCIALS.whatsapp, Icon: MessageCircle, label: "WhatsApp community" },
-            ].map(({ href, Icon, label }) => (
+            ].flatMap((s) => (s.href ? [{ ...s, href: s.href }] : [])).map(({ href, Icon, label }) => (
               <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="grid h-11 w-11 place-items-center rounded-full border border-primary-foreground/20 hover:border-gold hover:text-gold">
                 <Icon className="h-5 w-5" />
               </a>
