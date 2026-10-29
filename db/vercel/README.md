@@ -14,6 +14,7 @@ to its own database.
 | `02_seed.sql` | Real content only: the Women's Mentorship Conference, 14 Nov 2026 |
 | `03_make_admin.sql` | Makes a signed-up account an admin |
 | `04_gallery_team.sql` | Gallery photos, team/mentor profiles (with the founder) and the public `media` storage bucket. Admins manage both from `/admin` |
+| `05_event_images.sql` | Adds a flyer/image to events (managed in `/admin` → Events) and sets the 14 Nov conference flyer |
 
 ## 1. Create the project
 
@@ -27,7 +28,7 @@ to its own database.
 ## 2. Create the database
 
 In the project: **SQL Editor -> New query**. Paste `01_schema.sql`, click
-**Run**. Then do the same with `02_seed.sql`, then `04_gallery_team.sql`.
+**Run**. Then do the same with `02_seed.sql`, `04_gallery_team.sql` and `05_event_images.sql`.
 
 Before running the seed, confirm the conference seat capacity with the client
 and change `100` if needed.

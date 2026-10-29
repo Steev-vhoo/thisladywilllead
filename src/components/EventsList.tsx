@@ -10,15 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { mediaUrl } from "@/lib/media";
 
 type EventRow = {
   id: string; title: string; description: string | null; type: string; date: string;
-  location: string | null; virtual_link: string | null; max_attendees: number;
+  location: string | null; virtual_link: string | null; max_attendees: number; image_path: string | null;
 };
 
 export function EventsList({ limit }: { limit?: number }) {
   const [filter, setFilter] = useState("All");
   const [rsvp, setRsvp] = useState<EventRow | null>(null);
+  const [flyer, setFlyer] = useState<EventRow | null>(null);
   const { data: events = [], isLoading } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
@@ -52,7 +54,15 @@ export function EventsList({ limit }: { limit?: number }) {
           {shown.map((e) => {
             const d = new Date(e.date);
             return (
-              <li key={e.id} className="flex gap-4 rounded-2xl border bg-card p-5">
+              <li key={e.id} className="overflow-hidden rounded-2xl border bg-card sm:flex">
+                {e.image_path && (
+                  <button onClick={() => setFlyer(e)} aria-label={`View flyer for ${e.title}`}
+                    className="block w-full shrink-0 bg-secondary sm:w-56">
+                    <img src={mediaUrl(e.image_path)} alt={`${e.title} flyer`} loading="lazy"
+                      className="h-72 w-full object-cover object-top sm:aspect-[4/5] sm:h-auto" />
+                  </button>
+                )}
+                <div className="flex flex-1 gap-4 p-5">
                 <div className="grid h-16 w-16 shrink-0 place-content-center rounded-xl bg-royal text-center text-primary-foreground">
                   <span className="eyebrow text-gold">{d.toLocaleString("en-GB", { month: "short" })}</span>
                   <span className="font-display text-2xl font-bold leading-none">{d.getDate()}</span>
@@ -70,12 +80,20 @@ export function EventsList({ limit }: { limit?: number }) {
                   </p>
                   <Button size="sm" className="mt-3 rounded-full" onClick={() => setRsvp(e)}>RSVP / Register</Button>
                 </div>
+                </div>
               </li>
             );
           })}
         </ul>
       )}
       <RsvpDialog event={rsvp} onClose={() => setRsvp(null)} />
+      <Dialog open={!!flyer} onOpenChange={(o) => !o && setFlyer(null)}>
+        <DialogContent className="w-[calc(100%-1.5rem)] max-w-xl rounded-3xl p-3 sm:p-4">
+          <DialogTitle className="sr-only">{flyer?.title} flyer</DialogTitle>
+          {flyer?.image_path && <img src={mediaUrl(flyer.image_path)} alt={`${flyer.title} flyer`} className="max-h-[80vh] w-full rounded-2xl object-contain" />}
+          <Button className="rounded-full" onClick={() => { setRsvp(flyer); setFlyer(null); }}>RSVP / Register</Button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

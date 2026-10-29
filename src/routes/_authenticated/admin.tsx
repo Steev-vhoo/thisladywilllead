@@ -122,7 +122,7 @@ function StoriesAdmin() {
   );
 }
 
-const emptyEvent = { id: "", title: "", description: "", type: "Workshop", date: "", location: "", virtual_link: "", max_attendees: 50 };
+const emptyEvent = { id: "", title: "", description: "", type: "Workshop", date: "", location: "", virtual_link: "", max_attendees: 50, image_path: null as string | null };
 
 function toLocalInput(iso: string) {
   const d = new Date(iso);
@@ -132,6 +132,9 @@ function toLocalInput(iso: string) {
 function EventsAdmin() {
   const qc = useQueryClient();
   const [form, setForm] = useState(emptyEvent);
+  const [image, setImage] = useState<File | null>(null);
+  const [savedImage, setSavedImage] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   const { data: events = [] } = useQuery({
     queryKey: ["admin-events"],
     queryFn: async () => (await supabase.from("events").select("*").order("date", { ascending: false })).data ?? [],
@@ -141,21 +144,41 @@ function EventsAdmin() {
     queryFn: async () => (await supabase.from("event_rsvps").select("*").order("created_at")).data ?? [],
   });
   const refresh = () => qc.invalidateQueries();
+  function reset(target?: HTMLFormElement) {
+    setForm(emptyEvent); setImage(null); setSavedImage(null); target?.reset();
+  }
+  function edit(ev: (typeof events)[number]) {
+    setForm({ id: ev.id, title: ev.title, description: ev.description ?? "", type: ev.type, date: toLocalInput(ev.date), location: ev.location ?? "", virtual_link: ev.virtual_link ?? "", max_attendees: ev.max_attendees, image_path: ev.image_path });
+    setImage(null); setSavedImage(ev.image_path);
+  }
   async function save(e: React.FormEvent) {
     e.preventDefault();
-    const { id, ...rest } = form;
-    const payload = { ...rest, date: new Date(rest.date).toISOString(), description: rest.description || null, location: rest.location || null, virtual_link: rest.virtual_link || null };
-    const { error } = id ? await supabase.from("events").update(payload).eq("id", id) : await supabase.from("events").insert(payload);
-    if (error) { toast.error(error.message); return; }
-    toast.success(id ? "Event updated" : "Event posted");
-    setForm(emptyEvent); refresh();
+    const target = e.target as HTMLFormElement;
+    setBusy(true);
+    try {
+      const { id, ...rest } = form;
+      const image_path = image ? await uploadMedia("events", image) : rest.image_path;
+      const payload = { ...rest, image_path, date: new Date(rest.date).toISOString(), description: rest.description || null, location: rest.location || null, virtual_link: rest.virtual_link || null };
+      const { error } = id ? await supabase.from("events").update(payload).eq("id", id) : await supabase.from("events").insert(payload);
+      if (error) { if (image) await removeMedia(image_path); throw error; }
+      // The old image is only deleted once the event no longer points to it.
+      if (savedImage && savedImage !== image_path) await removeMedia(savedImage);
+      toast.success(id ? "Event updated" : "Event posted");
+      reset(target); refresh();
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Could not save event");
+    } finally {
+      setBusy(false);
+    }
   }
-  async function remove(id: string) {
+  async function remove(id: string, path: string | null) {
     if (!confirm("Delete this event and its sign-ups?")) return;
     const { error } = await supabase.from("events").delete().eq("id", id);
     if (error) { toast.error(error.message); return; }
+    await removeMedia(path);
     toast.success("Event deleted"); refresh();
   }
+  const preview = image ? URL.createObjectURL(image) : form.image_path ? mediaUrl(form.image_path) : null;
   return (
     <div className="grid gap-8 lg:grid-cols-2">
       <form onSubmit={save} className="space-y-4 rounded-2xl border bg-card p-6">
@@ -169,9 +192,22 @@ function EventsAdmin() {
           <Field label="Max attendees"><Input required type="number" min={1} value={form.max_attendees} onChange={(e) => setForm({ ...form, max_attendees: Number(e.target.value) })} /></Field>
         </div>
         <Field label="Online link"><Input type="url" value={form.virtual_link} onChange={(e) => setForm({ ...form, virtual_link: e.target.value })} /></Field>
+        <Field label={preview ? "Replace flyer / image" : "Flyer / image (JPG, PNG or WebP, up to 5 MB)"}>
+          <Input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => setImage(e.target.files?.[0] ?? null)} />
+        </Field>
+        {preview && (
+          <div className="flex items-end gap-3">
+            <img src={preview} alt="Event image preview" className="h-40 rounded-lg border object-contain" />
+            <Button type="button" variant="outline" size="sm" className="rounded-full" onClick={(e) => {
+              setImage(null); setForm({ ...form, image_path: null });
+              const input = (e.currentTarget.closest("form") as HTMLFormElement).querySelector<HTMLInputElement>('input[type="file"]');
+              if (input) input.value = "";
+            }}>Remove image</Button>
+          </div>
+        )}
         <div className="flex gap-2">
-          <Button type="submit" className="rounded-full">{form.id ? "Save changes" : "Post event"}</Button>
-          {form.id && <Button type="button" variant="outline" className="rounded-full" onClick={() => setForm(emptyEvent)}>Cancel</Button>}
+          <Button type="submit" disabled={busy} className="rounded-full">{busy ? "Saving…" : form.id ? "Save changes" : "Post event"}</Button>
+          {form.id && <Button type="button" variant="outline" className="rounded-full" onClick={(e) => reset(e.currentTarget.closest("form") as HTMLFormElement)}>Cancel</Button>}
         </div>
       </form>
       <ul className="space-y-3">
@@ -180,13 +216,16 @@ function EventsAdmin() {
           return (
             <li key={ev.id} className="rounded-xl border bg-card p-4">
               <div className="flex items-start justify-between gap-3">
-                <div>
+                <div className="flex items-start gap-3">
+                  {ev.image_path && <img src={mediaUrl(ev.image_path)} alt="" className="h-14 w-11 shrink-0 rounded object-cover object-top" />}
+                  <div>
                   <p className="font-semibold">{ev.title}</p>
                   <p className="text-sm text-muted-foreground">{new Date(ev.date).toLocaleString()} · {list.length}/{ev.max_attendees} signed up</p>
+                  </div>
                 </div>
                 <div className="flex shrink-0 gap-1">
-                  <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => setForm({ id: ev.id, title: ev.title, description: ev.description ?? "", type: ev.type, date: toLocalInput(ev.date), location: ev.location ?? "", virtual_link: ev.virtual_link ?? "", max_attendees: ev.max_attendees })}><Pencil className="h-4 w-4" /></Button>
-                  <Button size="icon" variant="ghost" aria-label="Delete" onClick={() => remove(ev.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                  <Button size="icon" variant="ghost" aria-label="Edit" onClick={() => edit(ev)}><Pencil className="h-4 w-4" /></Button>
+                  <Button size="icon" variant="ghost" aria-label="Delete" onClick={() => remove(ev.id, ev.image_path)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </div>
               </div>
               {list.length > 0 && (

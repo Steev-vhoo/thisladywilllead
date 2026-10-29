@@ -115,6 +115,7 @@ export type Database = {
           date: string
           description: string | null
           id: string
+          image_path: string | null
           location: string | null
           max_attendees: number
           title: string
@@ -126,6 +127,7 @@ export type Database = {
           date: string
           description?: string | null
           id?: string
+          image_path?: string | null
           location?: string | null
           max_attendees?: number
           title: string
@@ -137,6 +139,7 @@ export type Database = {
           date?: string
           description?: string | null
           id?: string
+          image_path?: string | null
           location?: string | null
           max_attendees?: number
           title?: string
