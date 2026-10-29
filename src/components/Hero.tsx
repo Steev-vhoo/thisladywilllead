@@ -21,15 +21,15 @@ export function HeroTagline() {
         {step < 3 && (
           <motion.p key={step} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute inset-0 font-display text-4xl font-bold text-gold sm:text-5xl" aria-hidden>
+            className="absolute inset-0 font-label text-4xl font-bold tracking-tight text-gold sm:text-5xl" aria-hidden>
             {PHRASES[step]}
           </motion.p>
         )}
         {step === 3 && (
           <motion.p key="all" initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 font-display text-3xl font-black text-gold drop-shadow-[0_0_18px_var(--gold)] sm:text-4xl" aria-hidden>
-            She Dreams. She Dares. She Does.
+            className="absolute inset-0 font-label text-2xl font-bold tracking-tight text-gold drop-shadow-[0_0_18px_var(--gold)] sm:text-[1.75rem]" aria-hidden>
+            She Dreams. She Dares.<br className="sm:hidden" /> She Does.
           </motion.p>
         )}
       </AnimatePresence>

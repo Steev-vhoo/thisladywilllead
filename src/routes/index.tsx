@@ -54,7 +54,7 @@ function Index() {
                 <Link to="/apply">Join the Cohort <ArrowRight className="ml-1" /></Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="h-14 rounded-full border-2 border-primary-foreground/40 bg-transparent px-8 text-base font-bold text-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
-                <Link to="/donate">Donate (MoMo)</Link>
+                <Link to="/donate">Donate</Link>
               </Button>
             </div>
           </Reveal>
