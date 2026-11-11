@@ -9,7 +9,7 @@ export const PILLARS = [
   { name: "Boldness", text: "Courage to dream, dare and do what God has placed in our hearts." },
 ] as const;
 
-export const SITE_URL = "https://thisladywilllead.lovable.app";
+export const SITE_URL = "https://thisladywill.com";
 
 // phone and whatsapp stay null until the client confirms a number; the UI hides them while null.
 export const CONTACT: { email: string; phone: string | null; whatsapp: string | null; location: string } = {
