@@ -50,11 +50,8 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Button asChild size="sm" variant="outline" className="hidden rounded-full border-primary/30 text-primary sm:inline-flex">
-            <Link to={memberTo}>{session ? "Member Area" : "Login / Member Area"}</Link>
-          </Button>
-          <Button asChild size="sm" className="rounded-full bg-gold text-gold-foreground hover:bg-gold/90">
-            <Link to="/apply">Join the Cohort</Link>
+          <Button asChild size="sm" className="glow-gold rounded-full bg-gold px-5 font-semibold text-gold-foreground hover:bg-gold/90">
+            <Link to={memberTo}>{session ? "Portal" : "Login"}</Link>
           </Button>
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
@@ -67,7 +64,7 @@ export function SiteHeader() {
                 {PROGRAMS.map((p) => (
                   <Link key={p.slug} to="/programs" hash={p.slug} onClick={() => setOpen(false)} className="rounded-lg px-6 py-2 text-sm hover:bg-secondary">{p.name}</Link>
                 ))}
-                {[...NAV, { to: "/donate", label: "Donate" }, { to: memberTo, label: "Login / Member Area" }].map((n) => (
+                {[...NAV, { to: "/donate", label: "Donate" }, { to: memberTo, label: session ? "Portal" : "Login" }].map((n) => (
                   <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="rounded-lg px-3 py-3 font-label font-semibold hover:bg-secondary">{n.label}</Link>
                 ))}
               </nav>

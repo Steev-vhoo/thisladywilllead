@@ -92,6 +92,15 @@
 @utility bg-royal { background-image: var(--gradient-royal); }
 @utility shadow-gold { box-shadow: var(--shadow-gold); }
 @utility shadow-royal { box-shadow: var(--shadow-royal); }
+/* Soft pulsing gold halo, used on the header Login button. */
+@utility glow-gold { animation: glow-gold 2.4s ease-in-out infinite; }
+@keyframes glow-gold {
+  0%, 100% { box-shadow: 0 0 6px 0 color-mix(in oklab, var(--gold) 45%, transparent), 0 0 0 0 color-mix(in oklab, var(--gold) 40%, transparent); }
+  50% { box-shadow: 0 0 18px 2px color-mix(in oklab, var(--gold) 70%, transparent), 0 0 0 5px color-mix(in oklab, var(--gold) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glow-gold { animation: none; box-shadow: 0 0 12px 1px color-mix(in oklab, var(--gold) 55%, transparent); }
+}
 @utility eyebrow {
   font-family: var(--font-label);
   font-size: 0.72rem;
