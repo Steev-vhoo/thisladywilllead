@@ -15,6 +15,7 @@ to its own database.
 | `03_make_admin.sql` | Makes a signed-up account an admin |
 | `04_gallery_team.sql` | Gallery photos, team/mentor profiles (with the founder) and the public `media` storage bucket. Admins manage both from `/admin` |
 | `05_event_images.sql` | Adds a flyer/image to events (managed in `/admin` → Events) and sets the 14 Nov conference flyer |
+| `06_first_cohort_gallery.sql` | Adds the 12 First Cohort fellows (photo, name, school, programme) to the Gallery |
 
 ## 1. Create the project
 

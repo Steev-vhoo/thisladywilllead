@@ -70,6 +70,7 @@ function Gallery() {
                     className="aspect-square w-full object-cover transition duration-300 group-hover:scale-105"
                   />
                 </button>
+                {p.caption && <Caption text={p.caption} className="mt-2 text-sm" />}
               </StaggerItem>
             ))}
           </Stagger>
@@ -78,10 +79,31 @@ function Gallery() {
       <Dialog open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
         <DialogContent className="w-[calc(100%-1.5rem)] max-w-4xl rounded-3xl p-3 sm:p-4">
           <DialogTitle className="sr-only">{open?.caption ?? open?.album ?? "Photo"}</DialogTitle>
-          {open && <img src={mediaUrl(open.image_path)} alt={open.caption ?? open.album} className="max-h-[75vh] w-full rounded-2xl object-contain" />}
-          {open?.caption && <DialogDescription className="px-1 pb-1 text-base text-foreground">{open.caption}</DialogDescription>}
+          {open && <img src={mediaUrl(open.image_path)} alt={open.caption ?? open.album} className="mx-auto max-h-[75vh] w-auto max-w-full rounded-2xl object-contain" />}
+          {open?.caption && (
+            <DialogDescription asChild>
+              <div className="px-1 pb-1 text-center text-base text-foreground"><Caption text={open.caption} /></div>
+            </DialogDescription>
+          )}
         </DialogContent>
       </Dialog>
     </section>
+  );
+}
+
+// Captions written "Name — details" show the name in bold above the details.
+function Caption({ text, className }: { text: string; className?: string }) {
+  const [title, detail] = text.split(" — ");
+  return (
+    <p className={className}>
+      {detail ? (
+        <>
+          <span className="block font-semibold text-primary">{title}</span>
+          <span className="block text-muted-foreground">{detail}</span>
+        </>
+      ) : (
+        text
+      )}
+    </p>
   );
 }
